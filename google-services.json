@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1049111891510",
+    "project_id": "valentine-s-event",
+    "storage_bucket": "valentine-s-event.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049111891510:android:7253feaa83314f463d1297",
+        "android_client_info": {
+          "package_name": "com.example.expense_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049111891510-1etf1v6eddvdbqlvvvdvdcnmsiu3n3d1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6AtCk0rkMcgTz4I9VdgBfjP9crfMfPBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049111891510-1etf1v6eddvdbqlvvvdvdcnmsiu3n3d1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1049111891510-j4sdsqkhggn3033horbuutt5e8cr2hg6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.expenseTracker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

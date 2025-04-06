@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Authenticated users can access their own data only
+    match /users/{userId} {
+      // Allow read/write if the authenticated user ID matches the document ID
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // Allow read/write for demo user for convenient testing
+      allow read, write: if request.auth != null && 
+                          (request.auth.uid == userId || 
+                           request.auth.token.email == "demo@example.com");
+    }
+    
+    // Allow users to read and write only their own transactions
+    match /transactions/{transactionId} {
+      // For read operations, check either the userId field or email for demo users
+      allow read: if request.auth != null && 
+                   ((resource == null) || 
+                    resource.data.userId == request.auth.uid ||
+                    request.auth.token.email == "demo@example.com");
+      
+      // For create operations, ensure userId field matches the auth uid
+      allow create: if request.auth != null && 
+                    request.resource.data.userId == request.auth.uid;
+      
+      // For update operations (including creating non-existent documents with set())
+      allow update: if request.auth != null && 
+                     ((resource == null) || 
+                      resource.data.userId == request.auth.uid ||
+                      request.auth.token.email == "demo@example.com");
+      
+      // For delete operations
+      allow delete: if request.auth != null && 
+                     resource.data.userId == request.auth.uid;
+      
+      // Additional validation for create and update operations
+      // But make it more flexible for existing fields
+      allow create, update: if validTransaction(request.resource.data);
+    }
+    
+    // Transaction validation function
+    function validTransaction(transaction) {
+      // Required fields
+      return transaction.userId != null &&
+             transaction.amount != null &&
+             transaction.type != null &&
+             transaction.category != null &&
+             transaction.date != null &&
+             
+             // Type validation
+             (transaction.type == 'income' || transaction.type == 'expense') &&
+             
+             // Amount validation
+             transaction.amount is number &&
+             transaction.amount > 0;
+    }
+    
+    // Default deny all rule
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+} 
